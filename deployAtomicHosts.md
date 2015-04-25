@@ -58,7 +58,7 @@ addresses will do.
 Navigate back to the list of instances. On your instances, click the "More"
 dropdown in the "Actions" column and click "Associate Floating IP"  
 
-[![Associate Floating IP to instance](screenshots/associateFloatingIp.png)]
+![Associate Floating IP to instance](screenshots/associateFloatingIp.png)
 
 Now you may SSH into the VMs using your matching SSH key. 
 

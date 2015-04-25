@@ -7,6 +7,13 @@ There are two options for running the labs, either on **OpenStack**, or on your
 **laptop**. While running them on your local laptop may seem appealing, **running them
 on OpenStack will generally be less effort and will be faster**. 
 
+## Preparation
+
+### Choose your environment
+
+1. A working KVM environment or
+2. OpenStack environment
+
 ## Order that the labs should be delivered:
 
 1. [Deploy Atomic Hosts](deployAtomicHosts.md)
