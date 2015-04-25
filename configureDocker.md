@@ -19,5 +19,4 @@ registry.
 systemctl restart docker
 ```
 
-This concludes the deploying Atomic lab.
-
+## [NEXT LAB](atomicDockerLVM.md)
