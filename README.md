@@ -1,4 +1,11 @@
-# SATraining
+# EMEA SA2 Training
+
+This is a set of labs that will probably take an afternoon, but if you do not 
+finish them all within the afternoon you may continue at home. 
+
+There are two options for running the labs, either on OpenStack, or on your local 
+laptop. While running them on your local laptop may seem appealing, **running them
+on OpenStack will generally be less effort and will be faster**. 
 
 ## Order that the labs should be delivered:
 
