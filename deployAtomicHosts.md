@@ -133,6 +133,16 @@ virt-install --import --name atomic-ga-3 --ram 1024 --vcpus 2 --disk path=/var/l
 sudo -i
 ```
 
+You are not root on the Atomic host. 
+
+* Note that `yum` is **not available** on Atomic host. 
+
+```
+-bash-4.2# yum
+bash: yum: command not found
+```
+
+Instead, we must use the `atomic` command to update this host.
 
 * Update all of the Atomic Hosts. The following commands will subscribe you to receive updates and allow you to upgrade your Atomic Host.  
 
