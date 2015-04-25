@@ -74,6 +74,7 @@ SSH into the VMs with user `cloud-user` and the instance floating IP address. Th
 ssh -i <private SSH key> cloud-user@10.3.xx.xxx
 ```
 
+
 Once connected, verify that the release version is recent enough. 
 
 ```
@@ -82,6 +83,7 @@ redhat-release-atomic-host
 Name        : redhat-release-atomic-host
 Version     : 7.1
 Release     : ***20150219.0.atomic.el7.1***
+...
 ```
 
 ##**Deployment Option 2: Atomic Hosts on KVM**
