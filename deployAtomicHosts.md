@@ -1,41 +1,69 @@
-##**BEFORE YOU ARRIVE**
-    In order to make best use of the lab time, please review the deployment options and ensure either:
+# Lab Overview
 
-1. A working KVM environment or
-2. Access to an OpenStack environment
-
-##**Agenda / High Level Overview:**
-
-1. Deploy Atomic Hosts
-2. Configure Flannel
-3. Configure Kubernetes
-4. Deploy an Application
-5. Use Super Privileged Containers on the Atomic Hosts
-
+In this lab we are going to deploy some atomic hosts, explore Atomic, and setup
+an environment for a workload later in this training.
 
 #**Deployment**
 There are many ways to deploy an Atomic Host. In this lab, we provide guidance for OpenStack or local KVM.
 
+Note that Atomic Host can be deployed in a variety of other ways, and supports 
+various other hypervisors too, as well as kickstart option. However, to keep 
+this training quick and simple we are only providing 2x options here.
+
 ##**Deployment Option 1: Atomic Hosts on OpenStack**
 You may use an OpenStack service, which needs to have a keypair and a security group already configured.
 
-1. Navigate to Instances
-1. Click "Launch Instances"
-1 Complete dialog
+1. Open up the OpenStack dashboard in a web browser.
+1. From the header, navigate to **Instances**. You will see all the instances
+within your assigned OpenStack project form this view, not just the instances
+that you have created. 
+ 
+1. We need some Atomic host instances for our labs, so click the "Launch
+Instances" button to start.
+1 On the **Launch Instance** popup window, complete the fields in the tabs as
+follows; 
   1. Details tab
-    * Instance name: arbitrary name. Note the UUID of the image will be appended to the instance name. You may want to use your name in the image so you can easily find it.
-    * Flavor: *m1.medium*
+  	* Availability Zone: *<default>*
+    * Instance name: *<username>-atomic-host* - because we are creating 3
+	* instances, OpenStack will append a UUID to the end of the image name.
+    * Flavor: *m1.medium* 
     * Instance count: *3*
     * Instance Boot Source: *Boot from image*
-      * Image name: *[atomic_image]*
+      * Image name: *rhel-atomic-cloud-7.1-6*
   1. Access & Security tab
     * Select your keypair that was uploaded during OpenStack account setup
-    * Security Groups: *Default*
+    * Security Groups: *default*
 1. Click "Launch"
 
-Three VMs will be created. Once the Power State is *Running*, you may SSH into the VMs using your matching SSH key. 
+Three instances (virtual machines) will be created. It does take some time, so
+watch the instance view until the **Power State** is **Running**.
 
-* Note: Each instance requires a floating IP address in addition to the private OpenStack `172.x.x.x` address. Your OpenStack tenant may automatically assign a floating IP address. If not, you may need to assign it manually. If no floating IP addresses are available, create them.
+Each instance will start with a internal OpenSTack `172.x.x.x` IP address,
+which is not routed externally. The structure of this training requires that we
+are able to SSH into the external instances, therefore we need to create an
+external IP address - OpenStack calls these "Floating IP addresses". Lets
+create these next. 
+
+### Create external "Floating IP Addresses"
+
+1. In the header, go to "Access & Security", then navigate to the "Floating
+IPs" tab.
+1. Click "Allocate IP to Project".
+1. On the popup window, use a default pool, then click "Allocate IP".
+1. You will need 3 addresses, but they do not have to be in sequence - any IP
+addresses will do.
+
+### Allocate IP address to instances
+
+Navigate back to the list of instances. On your instances, click the "More"
+dropdown in the "Actions" column and click "Associate Floating IP"  
+
+[![Associate Floating IP to instance](screenshots/associateFloatingIp.png)]
+
+Now you may SSH into the VMs using your matching SSH key. 
+
+ requires a floating IP address in addition to the private
+* OpenStack `172.x.x.x` address. 
   1. Navigate to Access & Security
   1. Click "Floating IPs" tab
   1. Click "Allocate IPs to project"
