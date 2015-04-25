@@ -41,8 +41,12 @@ watch the instance view until the **Power State** is **Running**.
 Each instance will start with a internal OpenSTack `172.x.x.x` IP address,
 which is not routed externally. The structure of this training requires that we
 are able to SSH into the external instances, therefore we need to create an
-external IP address - OpenStack calls these "Floating IP addresses". Lets
-create these next. 
+external IP address - OpenStack calls these "Floating IP addresses". 
+
+If there are already some free IP Addresses, and the tentant is configured in
+this way, then it will automatically associate a Floating IP address when you
+create an instance. Looking at your instances, if it only has a 172.xxx.xxx.xxx
+address then you will need to associate a Foating IP address manually. 
 
 ### Create external "Floating IP Addresses"
 
@@ -60,20 +64,25 @@ dropdown in the "Actions" column and click "Associate Floating IP"
 
 ![Associate Floating IP to instance](screenshots/associateFloatingIp.png)
 
-Now you may SSH into the VMs using your matching SSH key. 
+Then you should have some instances that look like this;
 
- requires a floating IP address in addition to the private
-* OpenStack `172.x.x.x` address. 
-  1. Navigate to Access & Security
-  1. Click "Floating IPs" tab
-  1. Click "Allocate IPs to project"
-  1. Assign floating IP addresses to each VM instance
-* SSH into the VMs with user `cloud-user` and the instance floating IP address. This address will probably be in the `10.3.xx.xx` range.
+### Connect to the Atomic Host instance and verify release
+
+SSH into the VMs with user `cloud-user` and the instance floating IP address. This address will probably be in the `10.3.xx.xx` range.
 
 ```
 ssh -i <private SSH key> cloud-user@10.3.xx.xxx
 ```
 
+Once connected, verify that the release version is recent enough. 
+
+```
+[cloud-user@jread-atomic-host-22fb5e88-e0f9-4b4c-874f-666eb46173cd ~]$ rpm -qi
+redhat-release-atomic-host
+Name        : redhat-release-atomic-host
+Version     : 7.1
+Release     : ***20150219.0.atomic.el7.1***
+```
 
 ##**Deployment Option 2: Atomic Hosts on KVM**
 
