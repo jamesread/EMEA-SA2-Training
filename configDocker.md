@@ -6,6 +6,8 @@ For this lab, we add a private registry to pull and search images.
 
 **Estimated time:** 10 minutes
 
+## Edit Docker startup configuration
+
 * Edit the `/etc/sysconfig/docker` file and restart docker. You will need the following two lines;
 
 ```
