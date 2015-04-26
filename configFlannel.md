@@ -47,9 +47,9 @@ second value in 'SubnetLen' is the subnet size (from the /16) assigned to each
 host. Remember that a /16 network (65535 host addresses) is larger than a /24
 network (254 host addresses). 
 
-Submit the configuration to the etcd server. Use the public IP address of the
-master node. If this is an OpenStack VM you will need to look up the public
-IP address on the OpenStack Horizon dashboard.
+Submit the configuration to the etcd server. Use an IP address that the other nodes can reach the
+master node with to upload the data. If this is an OpenStack VM you will need to look up the 
+IP address on the OpenStack Horizon dashboard. Use the internal IP in this case.
 
 ```
 # curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config -XPUT
