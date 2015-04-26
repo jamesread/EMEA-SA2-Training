@@ -240,6 +240,6 @@ to an Atomic subscription. Borrow a RHN account from a friend!
 
 In this lab we created 3 hosts running RHEL Atomic, which will form the basis
 of the upcomming labs, where one host will become a Kubernetes Master, and the
-other two will become Kubernetes Minions. 
+other two will become Kubernetes Nodes. 
 
 ## [NEXT LAB](exploreAtomic.md)
