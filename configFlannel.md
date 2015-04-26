@@ -1,52 +1,40 @@
 #**Configure Flannel**
 
-* Check and explore the versions of software you have.  This should be the same on all nodes.
+Flannel is a major networking component of RHEL Atomic Host, which has one
+function - to allow containers on one host talk to another host. Without it,
+container networking could not span hosts. We are going to
+configure it in this lab. 
 
-```
-rpm -qa | egrep "etc|docker|flannel|kube"
-rpm -ql docker
-rpm -ql etcd
-rpm -ql kubernetes
-rpm -ql flannel
-rpm -qi docker
-rpm -qi etcd
-rpm -qi kubernetes
-rpm -qi flannel
-rpm -qd docker
-rpm -qd etcd
-rpm -qd kubernetes
-rpm -qd flannel
-rpm -qc docker
-rpm -qc etcd
-rpm -qc kubernetes
-rpm -qc flannel
-```
+Check and explore the versions of software you have.  This should be the same on all nodes.
 
-**Perform the following commands on the master node (pick one node as master):**
+# Store the Flannel network configuration in etcd
 
-* Look at networking before flannel configuration.
+Pick one of your Atomic hosts as the master for flannel. 
+
+Take a moment to look at networking before flannel configuration, you should
+see that is quite standard.
 
 ```
 # ip a
 ```
 
-* Start etcd.
-
+`etcd` is a distributued system used for storing flannel configuration in
+Atomic host. Before we start configuring Flannel we need to start its etcd as a
+dependcy, start it now and enable it to come up after a reboot. 
 
 ```
 # systemctl start etcd; systemctl enable etcd
 # systemctl status etcd
 ```
 
-
-* Configure Flannel by creating a `flannel-config.json` in your current directory.  The contents should be:
-
-
-**NOTE:** Choose an IP range that is *NOT* part of the public IP address range.
+We will configure Flannel by creating a `flannel-config.json` and then submit
+that configuration to `etcd` for flannel to use. We will write the flannel
+configuration to a temporary file. Create `/tmp/flannel-config.json` with this
+content; 
 
 ```json
 {
-    "Network": "18.0.0.0/16",
+    "Network": "10.99.0./16",
     "SubnetLen": 24,
     "Backend": {
         "Type": "vxlan",
@@ -55,69 +43,71 @@ rpm -qc flannel
 }
 ```
 
-* Add the configuration to the etcd server. Use the public IP address of the master node. If this is an OpenStack VM you will need to look up the public IP address on the OpenStack Horizon dashboard.
+Looking at this configuration you may wonder way the subnet is specified twice
+('/16' and 24 in 'SubnetLen'), but these are two different values. The subnet
+specified in the 'Network' statement is for the entire overlay network, and the
+second value in 'SubnetLen' is the subnet size (from the /16) assigned to each
+host. Remember that a /16 network (65535 host addresses) is larger than a /24
+network (254 host addresses). 
 
+Submit the configuration to the etcd server. Use the public IP address of the
+master node. If this is an OpenStack VM you will need to look up the public
+IP address on the OpenStack Horizon dashboard.
 
 ```
-# curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config -XPUT --data-urlencode value@flannel-config.json
+# curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config -XPUT
+# --data-urlencode value@/tmp/flannel-config.json
 ```
 
-Example of successful output:
+On success, the `etcd` server will response with a JSON response. Here is an example of successful output:
 
 ```json
-{"action":"set","node":{"key":"/coreos.com/network/config","value":"{\n    \"Network\": \"18.0.0.0/16\",\n    \"SubnetLen\": 24,\n    \"Backend\": {\n        \"Type\": \"vxlan\",\n        \"VNI\": 1\n     }\n}\n","modifiedIndex":3,"createdIndex":3}}-bash-4.2#
+{"action":"set","node":{"key":"/coreos.com/network/config","value":"{\n    \"Network\": \"18.0.0.0/16\",\n    \"SubnetLen\": 24,\n    \"Backend\": {\n        \"Type\": \"vxlan\",\n        \"VNI\": 1\n     }\n}\n","modifiedIndex":3,"createdIndex":3}}
 ```
 
-* Verify the key exists.  Use the IP Address of your etcd / master node.
+Flannel will use this configuration from `etcd` when it starts up.
 
+You can verify the configuration exists by just doing a simple CURL without
+setting any values;
 
 ```
 # curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config
 ```
 
-* Backup the flannel configuration file.
+# Configure Flanel startup options
 
+The configuration that we stored in etcd in the last section is shared between
+all Flannel hosts. We must now configure Flannel's startup options.
 
-```
-# cp /etc/sysconfig/flanneld{,.orig}
-```
+Configure Flannel to use the correct network interface. This is commonly `eth0`
+but might be `ens0` or `em1`. Use `ip a` to list network interfaces. This
+should not be necessary on most systems unless they have multiple network
+interfaces.  In which case you will want to use the interface capable of
+talking to other nodes in the cluster.
 
-* Configure flannel using the network interface of the system. This is commonly `eth0` but might be `ens3`. Use `ip a` to list network interfaces. This should not be necessary on most systems unless they have multiple network interfaces.  In which case you will want to use the interface capable of talking to other nodes in the cluster.
-
-```
-# sed -i 's/#FLANNEL_OPTIONS=""/FLANNEL_OPTIONS="eth0"/g' /etc/sysconfig/flanneld
-```
-
-
-* Edit `/etc/sysconfig/flanneld` file with the public IP address of the master node (If you are using OS1 use Private Address below for x.x.x.x). You must make a change here.
-
+`/etc/sysconfig/flanneld`:
 
 ```
-# Flanneld configuration options
-
-# etcd url location.  Point this to the server where etcd runs
+...
 FLANNEL_ETCD="http://x.x.x.x:4001"
-
-# etcd config key.  This is the configuration key that flannel queries
-# For address range assignment
-FLANNEL_ETCD_KEY="/coreos.com/network"
-
-# Any additional options that you want to pass
+...
 FLANNEL_OPTIONS="eth0"
 ```
 
-
 * Enable the flanneld service and reboot.
-
 
 ```
 # systemctl enable flanneld
 # systemctl reboot
 ```
 
-* The docker and flannel network interfaces must match otherwise docker will fail to start. If Docker fails to load, or the flannel IP is not set correctly, reboot the system.  It is also possible to stop docker, delete the docker0 network interface, and then restart docker after flannel has started.  But rebooting is easier. Do not move forward until you can issue an _ip a_ and the _flannel_ and _docker0_ interface are on the same subnet.
+Flannel is now a dependency for Docker - the `docker0` and `flannel.1` network
+interfaces must be on the same subnet otherwise docker will fail
+to start. If Docker fails to load, or the flannel IP is not set correctly,
+reboot the system. 
 
-* When the system comes back up check the interfaces on the host now. Notice there is now a flannel.1 interface.
+When the system comes back up check the interfaces on the host now. Notice
+there is now a flannel.1 interface.
 
 ```
 # ip a
@@ -130,40 +120,51 @@ FLANNEL_OPTIONS="eth0"
        valid_lft forever preferred_lft forever
 3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN 
     link/ether c2:13:e3:a3:ae:3e brd ff:ff:ff:ff:ff:ff
-    inet 18.0.26.0/16 scope global flannel.1
+    inet 10.99.25.0/16 scope global flannel.1
        valid_lft forever preferred_lft forever
     inet6 fe80::c013:e3ff:fea3:ae3e/64 scope link 
        valid_lft forever preferred_lft forever
 4: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN 
     link/ether 56:84:7a:fe:97:99 brd ff:ff:ff:ff:ff:ff
-    inet 18.0.26.1/24 scope global docker0
+    inet 10.99.25.1/24 scope global docker0
        valid_lft forever preferred_lft forever
 
 ```
 
+You see in the above example that the 10.99.x.x interface is shared between
+Docker and Flannel. 
 
 Now that master is configured, lets configure the other nodes called "minions" (minion{1,2}).
 
-**Perform the following commands on the other two atomic host minions:**
+# Configure the minion nodes
 
-* Use curl to check firewall settings from each minion to the master.  We need to ensure connectivity to the etcd service.  You may want to set up your `/etc/hosts` file for name resolution here.  If there are any issues, just fall back to IP addresses for now. **NOTE:** For OpenStack nodes use the *private IP address* of the master.
+The shared configuration that we set in `etcd` will also be read by the
+minions. Lets check that we can read it;
 
+* Use curl to check firewall settings from each minion to the master.  We need
+to ensure connectivity to the etcd service.  You may want to set up your
+`/etc/hosts` file for name resolution here.  If there are any issues, just
+fall back to IP addresses for now. 
+
+**NOTE:** For OpenStack nodes use the *private IP address* of the master, not
+the public IP address that we used before. 
 
 ```
 # curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config
 ```
 
-For some of the steps below, it might help to set up ssh keys on the master and copy those over to the minions, e.g. with ssh-copy-id.  You also might want to set hostnames on the minions and edit your `/etc/hosts` files on all nodes to reflect that.
+If it looks like you get a valid JSON configuration, you are ready to continue
+and configure flannel like the master, but use the IP address from the `curl`
+command above;
 
-From the master:
-
-* Copy over flannel configuration to the minions, both of them. Use `scp` or copy the file contents manually. In the OS1 (OpenStack) environment, you can not scp files without moving some keys around.  It might just be quicker to copy and paste the contents.  In a KVM hosted environment, feel free to _scp_ files around.
-
+`/etc/sysconfig/flanneld` contents:
 
 ```
-# scp /etc/sysconfig/flanneld x.x.x.x:/etc/sysconfig/.
+...
+FLANNEL_ETCD="http://x.x.x.x:4001"
+...
+FLANNEL_OPTIONS="eth0"
 ```
-
 
 * Restart flanneld on both of the minions.
 
@@ -172,32 +173,43 @@ From the master:
 # systemctl enable flanneld
 ```
 
-* Check the new interface on both of the minions.
+Check the new interface on both of the minions has a subnet that is *within*
+the range you configured (eg: 10.99.x.x);
 
 ```
 # ip a l flannel.1
 ```
 
-From any node in the cluster, check the cluster members by issuing a query to etcd via curl.  You should see that three servers have consumed subnets.  You can associate those subnets to each server by the MAC address that is listed in the output.
+Note that if you are using a /16 overlay network and a /24 host network as per
+the example, then you may have a master on 10.99.25.0/24 and a minion on
+10.99.30.0/24 - both of these networks are within the 10.99.0.0/16 network.
 
+From any node in the cluster, check the cluster members by issuing a query to
+etcd via curl.  You should see that three servers have consumed subnets.  You
+can associate those subnets to each server by the MAC address that is listed in 
+the output.
+
+## List all subnets in the flannel configuration
 
 ```
 # curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/subnets | python -mjson.tool
 ```
 
+The curl command gets all the subnets in the flannel network, you should see
+your 3 nodes listed. By piping the output to `python -mjson.tool` Python will
+format the JSON with line breaks so it is a little easier to read.
 
-* From all nodes, review the `/run/flannel/subnet.env` file.  This file was generated automatically by flannel.
+## Review the flannel configuration on a host
+
+From all nodes, review the `/run/flannel/subnet.env` file.  This file was
+ generated automatically by flannel.
 
 
 ```
 # cat /run/flannel/subnet.env
 ```
 
-* Check the network on the minion.
-
-```
-# ip a
-```
+You should see output that contains your `FLANNEL_SUBNET`. 
 
 * Docker will fail to load if the docker and flannel network interfaces are not setup correctly. Again it is possible to fix this by hand, but rebooting is easier.
 
@@ -237,71 +249,74 @@ inet 18.0.81.1/24 scope global docker0
 valid_lft forever preferred_lft forever
 ```
 
-Do not move forward until all three nodes have the docker and flannel interfaces on the same subnet.
+Do not move forward until all three nodes have the docker and flannel
+interfaces on the same subnet.
 
-At this point the flannel cluster is set up and we can test it. We have etcd running on the master node and flannel / Docker running on minion{1,2} minions. Next steps are for testing cross-host container communication which will confirm that Docker and flannel are configured properly.
+At this point the flannel cluster is set up and we can test it. We have etcd
+running on the master node and flannel / Docker running on minion{1,2} minions.
+Next steps are for testing cross-host container communication which will
+confirm that Docker and flannel are configured properly.
 
-##Test the flannel configuration
+## Test the flannel configuration
 
-From each minion, pull a Docker image for testing. In our case, we will use fedora:20.
+In this section we are going to spawn a container on two different hosts, and
+ping between the containers using the flannel network. Unfortunately the rhel7
+container image does not include `ifconfig` or `ip` to easily find the IP
+address of a container, but the **fedora:20** image and **rhel6:latest* do have these
+commands. Lets spawn one of each container. 
 
 * Issue the following on minion1.
 
-
 ```
-# docker run -it fedora:20 bash
+# docker run -it **rhel6**:latest bash
 ```
 
 * This will place you inside the container. Check the IP address.
-
 
 ```
 # ip a l eth0
 5: eth0:  mtu 1450 qdisc noqueue state UP group default
 link/ether 02:42:0a:00:51:02 brd ff:ff:ff:ff:ff:ff
-inet 18.0.81.2/24 scope global eth0
+inet 10.99.25.2/24 scope global eth0
 valid_lft forever preferred_lft forever
 inet6 fe80::42:aff:fe00:5102/64 scope link
 valid_lft forever preferred_lft forever
 ```
 
-
 You can see here that the IP address is on the flannel network.
 
 * Issue the following commands on minion2:
 
-
 ```
-# docker run -it fedora:20 bash
+# docker run -it **fedora**:latest bash
 
 # ip a l eth0
 5: eth0:  mtu 1450 qdisc noqueue state UP group default
 link/ether 02:42:0a:00:45:02 brd ff:ff:ff:ff:ff:ff
-inet 18.0.69.2/24 scope global eth0
+inet 10.99.30.2/24 scope global eth0
 valid_lft forever preferred_lft forever
 inet6 fe80::42:aff:fe00:4502/64 scope link
 valid_lft forever preferred_lft forever
 ```
 
-
 * Now, from the container running on minion2, ping the container running on minion1:
 
-
 ```
-# ping 18.0.81.2
-PING 18.0.81.2 (18.0.81.2) 56(84) bytes of data.
-64 bytes from 18.0.81.2: icmp_seq=2 ttl=62 time=2.93 ms
-64 bytes from 18.0.81.2: icmp_seq=3 ttl=62 time=0.376 ms
-64 bytes from 18.0.81.2: icmp_seq=4 ttl=62 time=0.306 ms
+# ping 10.99.25.2
+PING 10.99.25.2 (18.0.81.2) 56(84) bytes of data.
+64 bytes from 10.99.25.2: icmp_seq=2 ttl=62 time=2.93 ms
+64 bytes from 10.99.25.2: icmp_seq=3 ttl=62 time=0.376 ms
+64 bytes from 10.99.25.2: icmp_seq=4 ttl=62 time=0.306 ms
 ```
 
-* You should have received a reply. That is it. flannel is set up on the two minions and you have cross host communication. Etcd is set up on the master node. Next step is to overlay the cluster with kubernetes.
+You should have received a reply. That is it. flannel is set up on the two
+minions and you have cross host communication. `etcd` is set up on the master
+node. Do not move forward until you can ping from container to container on
+different hosts.
 
-Do not move forward until you can ping from container to container on different hosts.
+Next step is to overlay the cluster with kubernetes.
 
 Exit the containers on each node when finished.
-
-
 
 ##**Troubleshooting**
 

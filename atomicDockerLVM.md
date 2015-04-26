@@ -12,7 +12,7 @@
 
 #**Inspect the system**
 
-* Take note of the automatic storage configuration for Docker by
+Take note of the automatic storage configuration for Docker by
   looking at the logical volumes. An Atomic Host comes optimized out
   of the box to take advantage of LVM thinpool storage, instead of
   the loopback used with Docker by default.
