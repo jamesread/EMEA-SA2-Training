@@ -9,10 +9,28 @@ on OpenStack will generally be less effort and will be faster**.
 
 ## Preparation
 
+### Do your research/pre-learning!
+
+This set of labs is designed to teach you how the components work with a basic 
+implementation. They are not designed to teach you what the components are.
+Before you start, can you briefly explain what these are?
+
+1. Atomic Host
+1. Docker
+1. Flannel
+1. Kubernetes
+
+If you cannot, ask for help or learn the concepts first!
+
+### Networking
+
+You should have a working knowledge of basic subnetting. If you need a
+refresher, again, don't be afraid to ask.
+
 ### Choose your environment
 
 1. A working KVM environment or
-2. OpenStack environment
+1. OpenStack environment (very strongly preferred - much faster and scalable)
 
 ### Use correct networking
 
