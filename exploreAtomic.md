@@ -1,6 +1,14 @@
-## Explore the environment
+# Explore the environment
 
-What can you do?  What can't you do?  You may see a lot of "Command not found" messages...  We'll explain how to get around that with the rhel-tools container in a later lab. Type the following commands.  
+What can you do?  What can't you do?  You may see a lot of "Command not found"
+messages...  We'll explain how to get around that with the rhel-tools container
+in a later lab. 
+
+*If you are running late, you could skip this lab.*
+
+**Objective**: Get a feel for atomic.
+
+**Estimed time**: 10 minutes.
 
 ```
 man tcpdump
@@ -54,5 +62,11 @@ man tcpdump
 ```
 
 rhel-tools is a Super Privileged Container, which will be covered in the next presentation and lab.
+
+# Summary
+
+This lab was just to give you a tasted of RHEL Atomic, and what it feels like
+to be on the shell. It reinforces the concept that thee is no `yum` or commands
+that you may be familiar with on a standard RHEL distribution.
 
 ## [NEXT LAB](configureDocker.md)
