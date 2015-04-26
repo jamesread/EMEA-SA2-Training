@@ -124,7 +124,7 @@ virt-install --import --name atomic-ga-2 --ram 1024 --vcpus 2 --disk path=/var/l
 virt-install --import --name atomic-ga-3 --ram 1024 --vcpus 2 --disk path=/var/lib/libvirt/images/rhel-atomic-host-7-3.qcow2,format=qcow2,bus=virtio --disk path=/var/lib/libvirt/images/atomic0-cidata.iso,device=cdrom --network bridge=br0 --force
 ```
 
-##**Updates the Atomic Host**
+##**Update the Atomic Hosts**
 
 **NOTE:** We will be working on _all three (3)_ VMs. You will probably want to have three terminal windows or tabs open.
 
