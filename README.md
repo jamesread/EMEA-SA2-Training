@@ -14,6 +14,17 @@ on OpenStack will generally be less effort and will be faster**.
 1. A working KVM environment or
 2. OpenStack environment
 
+### Use correct networking
+
+These series of labs use no less than 5 networks if deplying with OpenStack, or 
+4 networks otherwise. It is obviously important to configure the correct
+networks in the correct places, and have a good understanding of what you're
+changing so as not to conflict. We'll mainly be working with 2x network ranges,
+make sure you know what these are for you before you continue;
+
+1. Flannel overlay network: xxx.xxx.xxx.xxx/16
+2. Kubernetes Services network: xxx.xxx.xxx.xxx/24
+
 ## Order that the labs should be delivered:
 
 1. [Deploy Atomic Hosts](deployAtomicHosts.md)
