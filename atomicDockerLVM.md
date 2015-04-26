@@ -1,14 +1,17 @@
-##**BEFORE YOU ARRIVE**
-    In order to make best use of the lab time, please ensure you have:
+# Atomic & Docker Storage architecture
+    
+In order to make best use of the lab time, please ensure you have:
 
 1. A running Atomic Host
 
-##**Agenda / High Level Overview:**
+**Objective**:
 
 1. Inspect and understand LVM setup
 2. Download images, write inside the container
 3. Use bind mounts and notice that space goes to the host pool
 4. Configuration merging
+
+**Estimated Time**: 20 minutes
 
 #**Inspect the system**
 
