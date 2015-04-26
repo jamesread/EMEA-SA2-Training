@@ -228,7 +228,7 @@ apache-controller   my-fedora-apache    fedora/apache       name=apache         
 ```bash
 # kubectl get pods
 POD                                    IP                  CONTAINER(S)        IMAGE(S)            HOST                LABELS              STATUS
-52228aef-be99-11e4-91e5-52540052bd24   18.0.79.4           my-fedora-apache    fedora/apache       kube-minion1/       name=apache         Running
+887b0ce0-ec3f-11e4-8c12-fa163e090f59   10.99.100.2         my-fedora-apache    fedora/apache       172.16.243.13/      name=apache         Running
 ```
 
 Feel free to resize the replication controller and run multiple copies of apache.  Note that the kubernetes `publicIP` balances between ALL of the replicas!
@@ -243,9 +243,9 @@ apache-controller   my-fedora-apache    fedora/apache       name=apache         
 
 # kubectl get pods
 POD                                    IP                  CONTAINER(S)        IMAGE(S)            HOST                LABELS              STATUS
-ac23ccfa-be99-11e4-91e5-52540052bd24   18.0.98.3           my-fedora-apache    fedora/apache       kube-minion2/       name=apache         Running
-52228aef-be99-11e4-91e5-52540052bd24   18.0.79.4           my-fedora-apache    fedora/apache       kube-minion1/       name=apache         Running
-ac22a801-be99-11e4-91e5-52540052bd24   18.0.98.2           my-fedora-apache    fedora/apache       kube-minion2/       name=apache         Running
+887b0ce0-ec3f-11e4-8c12-fa163e090f59   10.99.100.2         my-fedora-apache    fedora/apache       172.16.243.13/      name=apache         Running
+e623955d-ec3f-11e4-8c12-fa163e090f59   10.99.69.3          my-fedora-apache    fedora/apache       172.16.243.12/      name=apache         Running
+e6241e9c-ec3f-11e4-8c12-fa163e090f59   10.99.100.3         my-fedora-apache    fedora/apache       172.16.243.13/      name=apache         Running
 ```
 
 I suggest you resize to 0 before you delete the replication controller.  Deleting a `replicationController` will leave the pods running.
