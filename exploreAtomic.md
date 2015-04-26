@@ -69,4 +69,4 @@ This lab was just to give you a tasted of RHEL Atomic, and what it feels like
 to be on the shell. It reinforces the concept that thee is no `yum` or commands
 that you may be familiar with on a standard RHEL distribution.
 
-## [NEXT LAB](configureDocker.md)
+## [NEXT LAB](configDocker.md)
