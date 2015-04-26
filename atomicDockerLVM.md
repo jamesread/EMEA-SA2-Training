@@ -154,4 +154,12 @@ ls: cannot access /usr/etc/some*: No such file or directory
 /etc/somefile
 ```
 
+# Summary
+
+In this lab we basically just examined some of the deteailed storage
+architecture. This is mostly an implmentation detail and will not affect a
+great deal of end users.
+
+We also saw how configuration editing is handled in atomic. 
+
 ## [NEXT LAB](spcContainers.md)
