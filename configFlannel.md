@@ -133,7 +133,7 @@ Docker and Flannel.
 
 Now that master is configured, lets configure the other nodes called "minions" (minion{1,2}).
 
-# Configure the minion nodes
+# Configure the nodes
 
 The shared configuration that we set in `etcd` will also be read by the
 minions. Lets check that we can read it;
@@ -265,7 +265,9 @@ commands. Lets spawn one of each container.
 * Issue the following on minion1.
 
 ```
-# docker run -it **rhel6**:latest bash
+# atomic install registry.access.redhat.com/rhel6
+# atomic run --name=rhel6 rhel6
+# atomic run rhel6 /bin/bash
 ```
 
 * This will place you inside the container. Check the IP address.
@@ -285,7 +287,10 @@ You can see here that the IP address is on the flannel network.
 * Issue the following commands on minion2:
 
 ```
-# docker run -it **fedora**:latest bash
+
+# atomic install registry.access.redhat.com/rhel6
+# atomic run --name=rhel6 rhel6
+# atomic run rhel6 /bin/bash
 
 # ip a l eth0
 5: eth0:  mtu 1450 qdisc noqueue state UP group default
@@ -299,7 +304,7 @@ valid_lft forever preferred_lft forever
 * Now, from the container running on minion2, ping the container running on minion1:
 
 ```
-# ping 10.99.25.2
+# ping -c 3 10.99.25.2 
 PING 10.99.25.2 (18.0.81.2) 56(84) bytes of data.
 64 bytes from 10.99.25.2: icmp_seq=2 ttl=62 time=2.93 ms
 64 bytes from 10.99.25.2: icmp_seq=3 ttl=62 time=0.376 ms
@@ -314,6 +319,9 @@ different hosts.
 Next step is to overlay the cluster with kubernetes.
 
 Exit the containers on each node when finished.
+```
+# atomic stop rhel6
+```
 
 ##**Troubleshooting**
 
