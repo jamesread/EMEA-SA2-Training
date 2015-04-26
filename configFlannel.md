@@ -31,7 +31,7 @@ content;
 
 ```json
 {
-    "Network": "10.99.0./16",
+    "Network": "10.99.0.0/16",
     "SubnetLen": 24,
     "Backend": {
         "Type": "vxlan",
@@ -59,7 +59,7 @@ IP address on the OpenStack Horizon dashboard.
 On success, the `etcd` server will response with a JSON response. Here is an example of successful output:
 
 ```json
-{"action":"set","node":{"key":"/coreos.com/network/config","value":"{\n    \"Network\": \"18.0.0.0/16\",\n    \"SubnetLen\": 24,\n    \"Backend\": {\n        \"Type\": \"vxlan\",\n        \"VNI\": 1\n     }\n}\n","modifiedIndex":3,"createdIndex":3}}
+{"action":"set","node":{"key":"/coreos.com/network/config","value":"{\n    \"Network\": \"10.99.0.0/16\",\n    \"SubnetLen\": 24,\n    \"Backend\": {\n        \"Type\": \"vxlan\",\n        \"VNI\": 1\n     }\n}\n","modifiedIndex":3,"createdIndex":3}}
 ```
 
 Flannel will use this configuration from `etcd` when it starts up.
