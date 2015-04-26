@@ -1,5 +1,10 @@
 ## Configure docker to use a private registry
-Integrating a private registry is an important use case for customers. For this lab, we add a private registry to pull and search images.
+
+For this lab, we add a private registry to pull and search images.
+
+**Objective:** Integrating a private registry is an important use case for customers. 
+
+**Estimated time:** 10 minutes
 
 * Edit the `/etc/sysconfig/docker` file and restart docker. You will need the following two lines;
 
@@ -18,5 +23,14 @@ registry.
 ```
 systemctl restart docker
 ```
+
+# Summary
+
+This was a quick and simple lab to demonate how to configue Atomic host to use
+a private docker registry. This will be a common pattern in enterprise
+environments.
+
+**We will not be using the private registry until right at the end of these
+labs.** 
 
 ## [NEXT LAB](atomicDockerLVM.md)
