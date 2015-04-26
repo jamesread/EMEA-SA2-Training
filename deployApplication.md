@@ -55,7 +55,7 @@ On the master (master) -
 journalctl -f -l -xn -u kube-apiserver -u kube-scheduler
 ```
 
-* On the minion (minion) -
+* On the Node (minion) -
 
 ```
 journalctl -f -l -xn -u kubelet -u kube-proxy -u docker
@@ -78,7 +78,7 @@ The state might be 'Pending'. This indicates that docker is still attempting to 
 kubectl get pods --output=json apache
 ```
 
-* Finally, on the minion (minion), check that the pod is available and running.
+* Finally, on the Node (minion), check that the pod is available and running.
 
 ```
 docker images
