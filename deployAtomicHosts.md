@@ -31,7 +31,7 @@ Instances" button to start.
 follows; 
   1. Details tab
   	* Availability Zone: *<default>*
-    * Instance name: *<username>-atomic-host* - because we are creating 3
+    * Instance name: *<username>*-atomic-host - because we are creating 3
 	* instances, OpenStack will append a UUID to the end of the image name.
     * Flavor: *m1.medium* 
     * Instance count: *3*
@@ -45,7 +45,7 @@ follows;
 Three instances (virtual machines) will be created. It does take some time, so
 watch the instance view until the **Power State** is **Running**.
 
-Each instance will start with a internal OpenSTack `172.x.x.x` IP address,
+Each instance will start with a internal OpenStack `172.x.x.x` IP address,
 which is not routed externally. The structure of this training requires that we
 are able to SSH into the external instances, therefore we need to create an
 external IP address - OpenStack calls these "Floating IP addresses". 
