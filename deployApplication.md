@@ -252,4 +252,5 @@ ac22a801-be99-11e4-91e5-52540052bd24   18.0.98.2           my-fedora-apache    f
 
 I suggest you resize to 0 before you delete the replication controller.  Deleting a `replicationController` will leave the pods running.
 
-Of course this just scratches the surface. I recommend you head off to the kubernetes github page and follow the [guestbook example](https://github.com/GoogleCloudPlatform/kubernetes/tree/754a2a8305c812121c3845d8293efdd819b6a704/examples/guestbook-go). It is a bit more complicated but should expose you to more functionality.
+
+## [NEXT LAB](summary.md)
