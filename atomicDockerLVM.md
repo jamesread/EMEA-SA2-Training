@@ -96,7 +96,8 @@ Now, remove the stopped container and notice that the space is freed in Docker s
 
 ```
 # mkdir -p /var/local/containerdata
-# chcon -R -h -t svirt_sandbox_file_t /var/local/containerdata/
+# semanage fcontext --add -t svirt_sandbox_file_t '/var/local/containerdata(/.*)?'
+# restorecon -vFFR /var/local/containerdata
 # docker run --rm -v /var/local/containerdata:/var/tmp registry.access.redhat.com/rhel7 dd if=/dev/zero of=/var/tmp/data count=100000
 100000+0 records in
 100000+0 records out
