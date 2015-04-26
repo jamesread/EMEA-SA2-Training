@@ -43,10 +43,18 @@ make sure you know what these are for you before you continue;
 1. Flannel overlay network: xxx.xxx.xxx.xxx/16
 2. Kubernetes Services network: xxx.xxx.xxx.xxx/24
 
-## Order that the labs should be delivered:
+# Agenda
+
+- Deploy Atomic Hosts
+- Explore Atomic
+- Super Privilaged Containers
+- Docker Storage architecture
+- Configure Docker
+- Configure Flannel
+- Configure Kubernetes
+- Deploy a demo application
+- Summary
+
+## Get started!
 
 1. [Deploy Atomic Hosts](deployAtomicHosts.md)
-1. [Atomic LVM Storage](atomicDockerLVM.md)
-1. [SPC Images / Containers](spcContainers.md)
-1. [Configure Flannel](configFlannel.md)
-1. [Configure Kubernetes](configKubernetes.md)
