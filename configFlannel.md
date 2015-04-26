@@ -1,9 +1,6 @@
 #**Configure Flannel**
 
-Flannel is a major networking component of RHEL Atomic Host, which has one
-function - to allow containers on one host talk to another host. Without it,
-container networking could not span hosts. We are going to
-configure it in this lab. 
+Flannel is a major networking component of RHEL Atomic Host, which has one function - to allow containers running one host talk to containers running on another host. Without it, container networking could not span hosts. We are going to configure it in this lab. 
 
 Check and explore the versions of software you have.  This should be the same on all nodes.
 
