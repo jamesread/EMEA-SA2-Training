@@ -1,7 +1,14 @@
 # Lab Overview
 
 In this lab we are going to deploy some atomic hosts, explore Atomic, and setup
-an environment for a workload later in this training.
+an environment for a workload later in this training. We will be deploying 3
+hosts, one will later become a master for services like kubernetes, and 2 will
+become nodes or "minions" in kubernetes terms. 
+
+**Objective:** By the end of this lab you should have 3 atomic hosts updated to the
+latest version.
+
+**Estimated time:** 20 minutes
 
 #**Deployment**
 There are many ways to deploy an Atomic Host. In this lab, we provide guidance for OpenStack or local KVM.
@@ -222,5 +229,18 @@ system is rebooted, it will boot into the new 7.1.0 tree.
   2015-02-19 20:26:26     7.1.0       5799825b36     rhel-atomic-host rhel-atomic-host-ostree:rhel-atomic-host/7/x86_64/standard 
 ```
 
+# Troubleshooting
+
+1. Subscription manager/`atomic host upgrade` are slow - yes, they are. Have
+patience and work in paralell.
+1. No updates are found, or atomic cannot update after I have registered with
+`subscription-manager` - Quite possibly your RHN account does not have access
+to an Atomic subscription. Borrow a RHN account from a friend! 
+
+# Summary
+
+In this lab we created 3 hosts running RHEL Atomic, which will form the basis
+of the upcomming labs, where one host will become a Kubernetes Master, and the
+other two will become Kubernetes Minions. 
 
 ## [NEXT LAB](exploreAtomic.md)
