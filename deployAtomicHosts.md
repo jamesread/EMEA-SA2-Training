@@ -30,8 +30,8 @@ Instances" button to start.
 1 On the **Launch Instance** popup window, complete the fields in the tabs as
 follows; 
   1. Details tab
-  	* Availability Zone: <default>
-    * Instance name: <username>-atomic-host - because we are creating 3 instances, OpenStack will append a UUID to the end of the image name.
+  	* Availability Zone: $default
+    * Instance name: $username-atomic-host - because we are creating 3 instances, OpenStack will append a UUID to the end of the image name.
     * Flavor: *m1.medium* 
     * Instance count: *3*
     * Instance Boot Source: *Boot from image*
