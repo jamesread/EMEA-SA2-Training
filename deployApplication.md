@@ -62,14 +62,12 @@ journalctl -f -l -xn -u kubelet -u kube-proxy -u docker
 ```
 
 
-* After the pod is deployed, you can also list the pod.  I have a few pods running here.
+* After the pod is deployed, you can also list the pod.  
 
 ```
 # kubectl get pods
 POD                 IP                  CONTAINER(S)        IMAGE(S)            HOST                LABELS              STATUS
-apache              18.0.53.3           my-fedora-apache    fedora/apache       192.168.121.147/    name=apache         Running
-mysql               18.0.73.2           mysql               mysql               192.168.121.101/    name=mysql          Running
-redis-master        18.0.53.2           master              dockerfile/redis    192.168.121.147/    name=redis-master   Running
+apache              10.99.69.2          my-fedora-apache    fedora/apache       172.16.243.12/      name=apache         Running
 ```
 
 The state might be 'Pending'. This indicates that docker is still attempting to download and launch the container.
