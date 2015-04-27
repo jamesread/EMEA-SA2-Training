@@ -55,21 +55,19 @@ On the master (master) -
 journalctl -f -l -xn -u kube-apiserver -u kube-scheduler
 ```
 
-* On the minion (minion) -
+* On the Node (minion) -
 
 ```
 journalctl -f -l -xn -u kubelet -u kube-proxy -u docker
 ```
 
 
-* After the pod is deployed, you can also list the pod.  I have a few pods running here.
+* After the pod is deployed, you can also list the pod.  
 
 ```
 # kubectl get pods
 POD                 IP                  CONTAINER(S)        IMAGE(S)            HOST                LABELS              STATUS
-apache              18.0.53.3           my-fedora-apache    fedora/apache       192.168.121.147/    name=apache         Running
-mysql               18.0.73.2           mysql               mysql               192.168.121.101/    name=mysql          Running
-redis-master        18.0.53.2           master              dockerfile/redis    192.168.121.147/    name=redis-master   Running
+apache              10.99.69.2          my-fedora-apache    fedora/apache       172.16.243.12/      name=apache         Running
 ```
 
 The state might be 'Pending'. This indicates that docker is still attempting to download and launch the container.
@@ -80,7 +78,7 @@ The state might be 'Pending'. This indicates that docker is still attempting to 
 kubectl get pods --output=json apache
 ```
 
-* Finally, on the minion (minion), check that the pod is available and running.
+* Finally, on the Node (minion), check that the pod is available and running.
 
 ```
 docker images
@@ -230,7 +228,7 @@ apache-controller   my-fedora-apache    fedora/apache       name=apache         
 ```bash
 # kubectl get pods
 POD                                    IP                  CONTAINER(S)        IMAGE(S)            HOST                LABELS              STATUS
-52228aef-be99-11e4-91e5-52540052bd24   18.0.79.4           my-fedora-apache    fedora/apache       kube-minion1/       name=apache         Running
+887b0ce0-ec3f-11e4-8c12-fa163e090f59   10.99.100.2         my-fedora-apache    fedora/apache       172.16.243.13/      name=apache         Running
 ```
 
 Feel free to resize the replication controller and run multiple copies of apache.  Note that the kubernetes `publicIP` balances between ALL of the replicas!
@@ -245,9 +243,9 @@ apache-controller   my-fedora-apache    fedora/apache       name=apache         
 
 # kubectl get pods
 POD                                    IP                  CONTAINER(S)        IMAGE(S)            HOST                LABELS              STATUS
-ac23ccfa-be99-11e4-91e5-52540052bd24   18.0.98.3           my-fedora-apache    fedora/apache       kube-minion2/       name=apache         Running
-52228aef-be99-11e4-91e5-52540052bd24   18.0.79.4           my-fedora-apache    fedora/apache       kube-minion1/       name=apache         Running
-ac22a801-be99-11e4-91e5-52540052bd24   18.0.98.2           my-fedora-apache    fedora/apache       kube-minion2/       name=apache         Running
+887b0ce0-ec3f-11e4-8c12-fa163e090f59   10.99.100.2         my-fedora-apache    fedora/apache       172.16.243.13/      name=apache         Running
+e623955d-ec3f-11e4-8c12-fa163e090f59   10.99.69.3          my-fedora-apache    fedora/apache       172.16.243.12/      name=apache         Running
+e6241e9c-ec3f-11e4-8c12-fa163e090f59   10.99.100.3         my-fedora-apache    fedora/apache       172.16.243.13/      name=apache         Running
 ```
 
 I suggest you resize to 0 before you delete the replication controller.  Deleting a `replicationController` will leave the pods running.

@@ -30,9 +30,8 @@ Instances" button to start.
 1 On the **Launch Instance** popup window, complete the fields in the tabs as
 follows; 
   1. Details tab
-  	* Availability Zone: *<default>*
-    * Instance name: *<username>-atomic-host* - because we are creating 3
-	* instances, OpenStack will append a UUID to the end of the image name.
+  	* Availability Zone: $default
+    * Instance name: $username-atomic-host - because we are creating 3 instances, OpenStack will append a UUID to the end of the image name.
     * Flavor: *m1.medium* 
     * Instance count: *3*
     * Instance Boot Source: *Boot from image*
@@ -45,7 +44,7 @@ follows;
 Three instances (virtual machines) will be created. It does take some time, so
 watch the instance view until the **Power State** is **Running**.
 
-Each instance will start with a internal OpenSTack `172.x.x.x` IP address,
+Each instance will start with an internal OpenStack `172.x.x.x` IP address,
 which is not routed externally. The structure of this training requires that we
 are able to SSH into the external instances, therefore we need to create an
 external IP address - OpenStack calls these "Floating IP addresses". 
@@ -125,7 +124,7 @@ virt-install --import --name atomic-ga-2 --ram 1024 --vcpus 2 --disk path=/var/l
 virt-install --import --name atomic-ga-3 --ram 1024 --vcpus 2 --disk path=/var/lib/libvirt/images/rhel-atomic-host-7-3.qcow2,format=qcow2,bus=virtio --disk path=/var/lib/libvirt/images/atomic0-cidata.iso,device=cdrom --network bridge=br0 --force
 ```
 
-##**Updates the Atomic Host**
+##**Update the Atomic Hosts**
 
 **NOTE:** We will be working on _all three (3)_ VMs. You will probably want to have three terminal windows or tabs open.
 
@@ -241,6 +240,6 @@ to an Atomic subscription. Borrow a RHN account from a friend!
 
 In this lab we created 3 hosts running RHEL Atomic, which will form the basis
 of the upcomming labs, where one host will become a Kubernetes Master, and the
-other two will become Kubernetes Minions. 
+other two will become Kubernetes Nodes. 
 
 ## [NEXT LAB](exploreAtomic.md)

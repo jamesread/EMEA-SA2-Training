@@ -1,4 +1,4 @@
-## Using Super Privileged Containers on Atomic Host
+## Using Super Privileged Containers (SPC) on Atomic Host
 
 We are trying to keep the Atomic image as small as possible where it
 makes sense. This means that anything else that gets added to the Atomic Host
@@ -9,7 +9,7 @@ two functioning Atomic Hosts (which will be referred to as node 1 and node 2).
 **Objective**: To explore some of the images that we will be distributing for
 Atomic and explain SPC. 
 
-**Estimed time**: 20 minutes
+**Estimed time**: 30 minutes
 
 *You may safely skip this lab if you are running short on time.*
 
@@ -138,7 +138,7 @@ Notice on a RHEL Atomic Host there is no syslog by default. You can look at the 
 journalctl 
 ```
 
-If you want to use rsyslog on your host, you need to install the rsyslog SPC container.
+If you want to use rsyslog on your host, you need to install the rsyslog SPC.
 
 ###Using rsyslog
 

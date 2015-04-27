@@ -1,9 +1,6 @@
 #**Configure Flannel**
 
-Flannel is a major networking component of RHEL Atomic Host, which has one
-function - to allow containers on one host talk to another host. Without it,
-container networking could not span hosts. We are going to
-configure it in this lab. 
+Flannel is a major networking component of RHEL Atomic Host, which has one function - to allow containers running one host talk to containers running on another host. Without it, container networking could not span hosts. We are going to configure it in this lab. 
 
 Check and explore the versions of software you have.  This should be the same on all nodes.
 
@@ -34,7 +31,7 @@ content;
 
 ```json
 {
-    "Network": "10.99.0./16",
+    "Network": "10.99.0.0/16",
     "SubnetLen": 24,
     "Backend": {
         "Type": "vxlan",
@@ -50,9 +47,9 @@ second value in 'SubnetLen' is the subnet size (from the /16) assigned to each
 host. Remember that a /16 network (65535 host addresses) is larger than a /24
 network (254 host addresses). 
 
-Submit the configuration to the etcd server. Use the public IP address of the
-master node. If this is an OpenStack VM you will need to look up the public
-IP address on the OpenStack Horizon dashboard.
+Submit the configuration to the etcd server. Use an IP address that the other nodes can reach the
+master node with to upload the data. If this is an OpenStack VM you will need to look up the 
+IP address on the OpenStack Horizon dashboard. Use the internal IP in this case.
 
 ```
 # curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config -XPUT
@@ -62,7 +59,7 @@ IP address on the OpenStack Horizon dashboard.
 On success, the `etcd` server will response with a JSON response. Here is an example of successful output:
 
 ```json
-{"action":"set","node":{"key":"/coreos.com/network/config","value":"{\n    \"Network\": \"18.0.0.0/16\",\n    \"SubnetLen\": 24,\n    \"Backend\": {\n        \"Type\": \"vxlan\",\n        \"VNI\": 1\n     }\n}\n","modifiedIndex":3,"createdIndex":3}}
+{"action":"set","node":{"key":"/coreos.com/network/config","value":"{\n    \"Network\": \"10.99.0.0/16\",\n    \"SubnetLen\": 24,\n    \"Backend\": {\n        \"Type\": \"vxlan\",\n        \"VNI\": 1\n     }\n}\n","modifiedIndex":3,"createdIndex":3}}
 ```
 
 Flannel will use this configuration from `etcd` when it starts up.
@@ -136,7 +133,7 @@ Docker and Flannel.
 
 Now that master is configured, lets configure the other nodes called "minions" (minion{1,2}).
 
-# Configure the minion nodes
+# Configure the nodes
 
 The shared configuration that we set in `etcd` will also be read by the
 minions. Lets check that we can read it;
@@ -268,7 +265,9 @@ commands. Lets spawn one of each container.
 * Issue the following on minion1.
 
 ```
-# docker run -it **rhel6**:latest bash
+# atomic install registry.access.redhat.com/rhel6
+# atomic run --name=rhel6 rhel6
+# atomic run rhel6 /bin/bash
 ```
 
 * This will place you inside the container. Check the IP address.
@@ -288,7 +287,10 @@ You can see here that the IP address is on the flannel network.
 * Issue the following commands on minion2:
 
 ```
-# docker run -it **fedora**:latest bash
+
+# atomic install registry.access.redhat.com/rhel6
+# atomic run --name=rhel6 rhel6
+# atomic run rhel6 /bin/bash
 
 # ip a l eth0
 5: eth0:  mtu 1450 qdisc noqueue state UP group default
@@ -302,7 +304,7 @@ valid_lft forever preferred_lft forever
 * Now, from the container running on minion2, ping the container running on minion1:
 
 ```
-# ping 10.99.25.2
+# ping -c 3 10.99.25.2 
 PING 10.99.25.2 (18.0.81.2) 56(84) bytes of data.
 64 bytes from 10.99.25.2: icmp_seq=2 ttl=62 time=2.93 ms
 64 bytes from 10.99.25.2: icmp_seq=3 ttl=62 time=0.376 ms
@@ -317,6 +319,9 @@ different hosts.
 Next step is to overlay the cluster with kubernetes.
 
 Exit the containers on each node when finished.
+```
+# atomic stop rhel6
+```
 
 ##**Troubleshooting**
 
