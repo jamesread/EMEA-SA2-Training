@@ -24,7 +24,7 @@ If you cannot, ask for help or learn the concepts first!
 
 ### Networking
 
-You should have a working knowledge of basic sub-netting. If you need a
+You should have a working knowledge of basic subnetting. If you need a
 refresher, again, don't be afraid to ask.
 
 ### Choose your environment
@@ -34,7 +34,7 @@ refresher, again, don't be afraid to ask.
 
 ### Use correct networking
 
-These series of labs use no less than 5 networks if deploying with OpenStack, or 
+These series of labs use no less than 5 networks if deplying with OpenStack, or 
 4 networks otherwise. It is obviously important to configure the correct
 networks in the correct places, and have a good understanding of what you're
 changing so as not to conflict. We'll mainly be working with 2x network ranges,
@@ -47,7 +47,7 @@ make sure you know what these are for you before you continue;
 
 - Deploy Atomic Hosts
 - Explore Atomic
-- Super Privileged Containers
+- Super Privilaged Containers
 - Docker Storage architecture
 - Configure Docker
 - Configure Flannel

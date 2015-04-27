@@ -65,7 +65,7 @@ need to be an IP address range not used anywhere else.  They do not need to be
 routed.  They do not need to be assigned to anything.  It just must be an
 unused block of addresses.  Kubernetes will assign "services" one of these
 addresses.  But traffic to (or from) these addresses will NEVER leave a node.
-It's actually the proxy on the local node that responds to these addresses.
+It's actually the proxy on the local node that reponds to these addresses.
 This must be a different unused range than that assigned to flannel.  Flannel
 specifies the addresses used by pods.  portal_net specifies the addresses used
 by services.  But in both cases, no infrastructure changes are needed.  Just

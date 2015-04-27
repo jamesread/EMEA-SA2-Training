@@ -18,7 +18,7 @@ various other hypervisors too, as well as kickstart option. However, to keep
 this training quick and simple we are only providing 2x options here.
 
 ##**Deployment Option 1: Atomic Hosts on OpenStack**
-You may use an OpenStack service, which needs to have a key pair and a security group already configured.
+You may use an OpenStack service, which needs to have a keypair and a security group already configured.
 
 1. Open up the OpenStack dashboard in a web browser.
 1. From the header, navigate to **Instances**. You will see all the instances
@@ -27,7 +27,7 @@ that you have created.
  
 1. We need some Atomic host instances for our labs, so click the "Launch
 Instances" button to start.
-1 On the **Launch Instance** pop-up window, complete the fields in the tabs as
+1 On the **Launch Instance** popup window, complete the fields in the tabs as
 follows; 
   1. Details tab
   	* Availability Zone: $default
@@ -37,7 +37,7 @@ follows;
     * Instance Boot Source: *Boot from image*
       * Image name: *rhel-atomic-cloud-7.1-6*
   1. Access & Security tab
-    * Select your key-pair that was uploaded during OpenStack account setup
+    * Select your keypair that was uploaded during OpenStack account setup
     * Security Groups: *default*
 1. Click "Launch"
 
@@ -49,24 +49,24 @@ which is not routed externally. The structure of this training requires that we
 are able to SSH into the external instances, therefore we need to create an
 external IP address - OpenStack calls these "Floating IP addresses". 
 
-If there are already some free IP Addresses, and the tenant is configured in
+If there are already some free IP Addresses, and the tentant is configured in
 this way, then it will automatically associate a Floating IP address when you
 create an instance. Looking at your instances, if it only has a 172.xxx.xxx.xxx
-address then you will need to associate a Floating IP address manually. 
+address then you will need to associate a Foating IP address manually. 
 
 ### Create external "Floating IP Addresses"
 
 1. In the header, go to "Access & Security", then navigate to the "Floating
 IPs" tab.
 1. Click "Allocate IP to Project".
-1. On the pop-up window, use a default pool, then click "Allocate IP".
+1. On the popup window, use a default pool, then click "Allocate IP".
 1. You will need 3 addresses, but they do not have to be in sequence - any IP
 addresses will do.
 
 ### Allocate IP address to instances
 
 Navigate back to the list of instances. On your instances, click the "More"
-drop-down in the "Actions" column and click "Associate Floating IP"  
+dropdown in the "Actions" column and click "Associate Floating IP"  
 
 ![Associate Floating IP to instance](screenshots/associateFloatingIp.png)
 
@@ -136,7 +136,7 @@ Username: <your RHN account>
 # atomic host upgrade
 
 **NOTE:** subscription-manager can sometimes be **very slow**, note that
-you should run updates in parallel.
+you should run updates in paralell.
 
 ````
 -bash-4.2# atomic host upgrade
@@ -196,7 +196,7 @@ system is rebooted, it will boot into the new 7.1.0 tree.
 # Troubleshooting
 
 1. Subscription manager/`atomic host upgrade` are slow - yes, they are. Have
-patience and work in parallel.
+patience and work in paralell.
 1. No updates are found, or atomic cannot update after I have registered with
 `subscription-manager` - Quite possibly your RHN account does not have access
 to an Atomic subscription. Borrow a RHN account from a friend! 
@@ -204,7 +204,7 @@ to an Atomic subscription. Borrow a RHN account from a friend!
 # Summary
 
 In this lab we created 3 hosts running RHEL Atomic, which will form the basis
-of the upcoming labs, where one host will become a Kubernetes Master, and the
+of the upcomming labs, where one host will become a Kubernetes Master, and the
 other two will become Kubernetes Nodes. 
 
 ## [NEXT LAB](exploreAtomic.md)

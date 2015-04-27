@@ -15,9 +15,9 @@ see that is quite standard.
 # ip a
 ```
 
-`etcd` is a distributed system used for storing flannel configuration in
+`etcd` is a distributued system used for storing flannel configuration in
 Atomic host. Before we start configuring Flannel we need to start its etcd as a
-dependency, start it now and enable it to come up after a reboot. 
+dependcy, start it now and enable it to come up after a reboot. 
 
 ```
 # systemctl start etcd; systemctl enable etcd
@@ -71,7 +71,7 @@ setting any values;
 # curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config
 ```
 
-# Configure Flannel startup options
+# Configure Flanel startup options
 
 The configuration that we stored in etcd in the last section is shared between
 all Flannel hosts. We must now configure Flannel's startup options.

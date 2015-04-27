@@ -1,6 +1,6 @@
 # Atomic & Docker Storage architecture
 
-The docker implementation in RHEL uses LVM to storage the base image, as well as
+The docker implemtnation in RHEL uses LVM to storage the base image, as well as
 additional layers. It is important to mention that there are other storage
 drivers (such as overlayfs), and that LVM is just one option. However, it is
 currently the only supported option.
@@ -157,8 +157,8 @@ ls: cannot access /usr/etc/some*: No such file or directory
 
 # Summary
 
-In this lab we basically just examined some of the detailed storage
-architecture. This is mostly an implementation detail and will not affect a
+In this lab we basically just examined some of the deteailed storage
+architecture. This is mostly an implmentation detail and will not affect a
 great deal of end users.
 
 We also saw how configuration editing is handled in atomic. 

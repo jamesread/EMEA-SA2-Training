@@ -28,7 +28,7 @@ systemctl restart docker
 
 # Summary
 
-This was a quick and simple lab to demonstrate how to configure Atomic host to use
+This was a quick and simple lab to demonate how to configue Atomic host to use
 a private docker registry. This will be a common pattern in enterprise
 environments.
 
