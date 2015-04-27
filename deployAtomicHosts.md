@@ -11,7 +11,7 @@ latest version.
 **Estimated time:** 20 minutes
 
 #**Deployment**
-There are many ways to deploy an Atomic Host. In this lab, we provide guidance for OpenStack or local KVM.
+There are many ways to deploy an Atomic Host. In this lab, we provide guidance for OpenStack OS1.
 
 Note that Atomic Host can be deployed in a variety of other ways, and supports 
 various other hypervisors too, as well as kickstart option. However, to keep 
@@ -92,46 +92,11 @@ Release     : ***20150219.0.atomic.el7.1***
 ...
 ```
 
-##**Deployment Option 2: Atomic Hosts on KVM**
-
-* Grab and extract the Atomic and metadata images from our internal repository.  Use sudo and appropriate permissions.
-
-```
-wget [metadata ISO image]
-cp atomic0-cidata.iso /var/lib/libvirt/images/.
-wget [atomic QCOW2 image]
-cp rhel-atomic-host-7.qcow2.gz /var/lib/libvirt/images/.; cd /var/lib/libvirt/images
-gunzip rhel-atomic-host-7.qcow2.gz
-```
-
-* Make 3 copy-on-write images, using the downloaded image as a "gold" master.
-
-```bash
-for i in $(seq 3); do qemu-img create -f qcow2 -o backing_file=rhel-atomic-host-7.qcow2 rhel-atomic-host-7-${i}.qcow2 ; done
-```
-
-* Use the following commands to install the images. Note: You will need to change the bridge (br0) to match your setup, or at least confirm it matches what you have.
-
-* For Fedora or CentOS atomic hosts, we need to create cloud init data i.e. atomic0-cidata.iso in below commands. Refer https://www.technovelty.org//linux/running-cloud-images-locally.html
-
-* Use the following commands to install the images. Note: You will need to change the bridge to match your setup, or at least confirm it matches what you have.
-
-```
-virt-install --import --name atomic-ga-1 --ram 1024 --vcpus 2 --disk path=/var/lib/libvirt/images/rhel-atomic-host-7-1.qcow2,format=qcow2,bus=virtio --disk path=/var/lib/libvirt/images/atomic0-cidata.iso,device=cdrom --network bridge=br0 --force
-
-virt-install --import --name atomic-ga-2 --ram 1024 --vcpus 2 --disk path=/var/lib/libvirt/images/rhel-atomic-host-7-2.qcow2,format=qcow2,bus=virtio --disk path=/var/lib/libvirt/images/atomic0-cidata.iso,device=cdrom --network bridge=br0 --force
-
-virt-install --import --name atomic-ga-3 --ram 1024 --vcpus 2 --disk path=/var/lib/libvirt/images/rhel-atomic-host-7-3.qcow2,format=qcow2,bus=virtio --disk path=/var/lib/libvirt/images/atomic0-cidata.iso,device=cdrom --network bridge=br0 --force
-```
-
 ##**Update the Atomic Hosts**
 
 **NOTE:** We will be working on _all three (3)_ VMs. You will probably want to have three terminal windows or tabs open.
 
-* Confirm you can log in to the hosts:
-
-    Username: cloud-user
-    Password: atomic (KVM only)
+* Confirm you can log in to the hosts, remember the username is "cloud-user" and you must use SSH keys.
 
 * Enter sudo shell:
 
