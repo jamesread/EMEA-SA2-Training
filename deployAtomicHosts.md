@@ -104,7 +104,7 @@ Release     : ***20150219.0.atomic.el7.1***
 sudo -i
 ```
 
-You are not root on the Atomic host. 
+You are now root on the Atomic host. 
 
 * Note that `yum` is **not available** on Atomic host. 
 
