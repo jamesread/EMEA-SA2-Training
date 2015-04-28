@@ -128,7 +128,7 @@ Instead, we must use the `atomic` command to update this host.
 ## Register using subscription-manager
 
 ```
--bash-4.2# subscription manager register --auto-attach
+-bash-4.2# subscription-manager register --auto-attach
 Username: <your RHN account>
 ...
 ```
