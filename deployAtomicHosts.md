@@ -21,6 +21,7 @@ this training quick and simple we are only providing 2x options here.
 You may use an OpenStack service, which needs to have a key pair and a security group already configured.
 
 1. Open up the OpenStack dashboard in a web browser.
+1. Setup a Keypair under **Access & Security** - either create a new one for this tenant or upload your existing public key.
 1. From the header, navigate to **Instances**. You will see all the instances
 within your assigned OpenStack project form this view, not just the instances
 that you have created. 
