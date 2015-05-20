@@ -34,7 +34,4 @@ This was a quick and simple lab to demonstrate how to configure Atomic host to u
 a private docker registry. This will be a common pattern in enterprise
 environments.
 
-**We will not be using the private registry until right at the end of these
-labs.** 
-
 ## [NEXT LAB](atomicDockerLVM.md)
