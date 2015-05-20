@@ -47,31 +47,12 @@ watch the instance view until the **Power State** is **Running**.
 
 Each instance will start with an internal OpenStack `172.x.x.x` IP address,
 which is not routed externally. The structure of this training requires that we
-are able to SSH into the external instances, therefore we need to create an
+are able to SSH into the instances from our external network, therefore we need to create an
 external IP address - OpenStack calls these "Floating IP addresses". 
 
-If there are already some free IP Addresses, and the tenant is configured in
-this way, then it will automatically associate a Floating IP address when you
-create an instance. Looking at your instances, if it only has a 172.xxx.xxx.xxx
-address then you will need to associate a Floating IP address manually. 
-
-### Create external "Floating IP Addresses"
-
-1. In the header, go to "Access & Security", then navigate to the "Floating
-IPs" tab.
-1. Click "Allocate IP to Project".
-1. On the pop-up window, use a default pool, then click "Allocate IP".
-1. You will need 3 addresses, but they do not have to be in sequence - any IP
-addresses will do.
-
-### Allocate IP address to instances
-
-Navigate back to the list of instances. On your instances, click the "More"
-drop-down in the "Actions" column and click "Associate Floating IP"  
-
-![Associate Floating IP to instance](screenshots/associateFloatingIp.png)
-
-Then you should have some instances that look like this;
+Normally in OpenStack, you are requied to assign Floating IP Addresses manually.
+However, this tenant is configured so it will automatically associate a Floating IP address when you
+create an instance. 
 
 ### Connect to the Atomic Host instance and verify release
 
