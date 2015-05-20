@@ -2,6 +2,8 @@
 
 For this lab, we add a private registry to pull and search images.
 
+*The docker registry is not actually used in the rest of the labs, so if you are running late you can skip this lab.*
+
 **Objective:** Integrating a private registry is an important use case for customers. 
 
 **Estimated time:** 10 minutes
