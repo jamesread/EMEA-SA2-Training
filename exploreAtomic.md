@@ -31,6 +31,14 @@ atomic install rhel7/rhel-tools
 
 This will install the rhel-tools container, which can be used as the administrator's shell.
 
+The container must be running before we can execute any commands, so let's start it first:
+
+```
+atomic run --name rhel-tools rhel7/rhel-tools
+```
+
+You'll see that the 'atomic' command has wrapped around Docker and has put you directly into the container by executing /bin/bash. You can have an explore of this container, but I recommend you exit from the console at this point and proceed.
+
 Now let's try:
 
 ```
