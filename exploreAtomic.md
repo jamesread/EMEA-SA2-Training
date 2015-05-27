@@ -31,6 +31,14 @@ atomic install rhel7/rhel-tools
 
 This will install the rhel-tools container, which can be used as the administrator's shell.
 
+The container must be running before we can execute any commands, so let's start it first:
+
+```
+atomic run --name rhel-tools rhel7/rhel-tools
+```
+
+You'll see that the 'atomic' command has wrapped around Docker and has put you directly into the container by executing /bin/bash. You can have an explore of this container, but I recommend you exit from the console at this point and proceed.
+
 Now let's try:
 
 ```
@@ -47,11 +55,12 @@ atomic run rhel7/rhel-tools /bin/sh
 You might even want to create a shell script like the following on the Atomic Host as a helper script:
 
 ```
-vi /usr/local/sbin/man
-#!/bin/sh
-atomic run rhel7/rhel-tools man $@
+cat << EOF > /usr/local/sbin/man
+#!/usr/bin/env bash
+atomic run rhel7/rhel-tools man \$@
+EOF
 
-chmod +x /usr/local/sbin/man
+chmod a+x /usr/local/sbin/man
 ```
 
 This script makes using man pages transparent to the user (even though man pages are not installed on the Atomic Host, only in the rhel-tools container).
