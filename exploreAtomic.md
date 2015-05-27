@@ -55,11 +55,12 @@ atomic run rhel7/rhel-tools /bin/sh
 You might even want to create a shell script like the following on the Atomic Host as a helper script:
 
 ```
-vi /usr/local/sbin/man
-#!/bin/sh
-atomic run rhel7/rhel-tools man $@
+cat << EOF > /usr/local/sbin/man
+#!/usr/bin/env bash
+atomic run rhel7/rhel-tools man \$@
+EOF
 
-chmod +x /usr/local/sbin/man
+chmod a+x /usr/local/sbin/man
 ```
 
 This script makes using man pages transparent to the user (even though man pages are not installed on the Atomic Host, only in the rhel-tools container).
