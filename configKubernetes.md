@@ -23,8 +23,8 @@ These services are managed by systemd and the configuration resides in a
 central location, `/etc/kubernetes`. We will break the services up between the
 hosts.  The first host, *master*, will be the kubernetes master.  This host
 will run kube-apiserver, kube-controller-manager, and kube-scheduler. In
-addition, the master will also run _etcd_. The remaining hosts, the *minions*
-or *nodes*, will run kubelet, proxy, cadvisor and docker.
+addition, the master will also run _etcd_. The remaining hosts, or *nodes*, 
+will run kubelet, proxy, cadvisor and docker.
 
 ###Prepare the hosts
 
@@ -86,7 +86,7 @@ KUBE_API_ARGS=""
 ```
 
 Edit `/etc/kubernetes/controller-manager` to appear as such.  Substitute your
-minion IPs here in place of the MINION_PRIV_IP_{1,2} placeholder.
+node IPs here in place of the MINION_PRIV_IP_{1,2} placeholder.
 
 ```
 # Comma separated list of minions
@@ -103,22 +103,22 @@ for SERVICES in etcd kube-apiserver kube-controller-manager kube-scheduler; do
 done
 ```
 
-####Configure the kubernetes services on the minions
+####Configure the kubernetes services on the nodes
 
-**NOTE:** Make these changes on each minion.
+**NOTE:** Make these changes on each node.
 
 ***We need to configure and start the kubelet and proxy***
 
 **UGLY** Due to a bug in kubernetes we must configure an empty JSON
-authorization file on each minion.
-* Create the JSON file by running the following on all minions
+authorization file on each node. ( do we still need that? 11-June. )
+* Create the JSON file by running the following on all nodes
 
 ```bash
 echo "{}" > /var/lib/kubelet/auth
 ```
 
 Edit `/etc/kubernetes/kubelet` to appear as below.  Make sure you substitute
-kublet or minion IP addresses appropriately. You have to make two changes
+kublet or node IP addresses appropriately. You have to make two changes
 below.
 
 ```
@@ -143,7 +143,7 @@ KUBELET_ARGS="--auth_path=/var/lib/kubelet/auth"
 KUBE_PROXY_ARGS="--master=http://MASTER_PRIV_IP_ADDR:8080"
 ```
 
-* Start the appropriate services on the minions.
+* Start the appropriate services on the nodes.
 
 ```bash
 for SERVICES in kube-proxy kubelet docker; do
@@ -155,10 +155,10 @@ done
 
 *You should be finished!*
 
-* Check to make sure the cluster can see the minions from the master.
+* Check to make sure the cluster can see the nodes from the master.
 
 ```
-# kubectl get minions
+# kubectl get nodes
 NAME                LABELS              STATUS
 192.168.121.147     <none>              Ready
 192.168.121.101     <none>              Ready
