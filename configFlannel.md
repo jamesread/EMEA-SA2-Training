@@ -19,6 +19,17 @@ see that is quite standard.
 Atomic host. Before we start configuring Flannel we need to start its etcd as a
 dependcy, start it now and enable it to come up after a reboot. 
 
+Configure etcd to be reachable in your environment. Etcd runs on the master only 
+in our setup and needs to be reachable by all nodes. The easy way is to allow etcd
+to listen on all available interfaces. Restrict this as you see fit, in your 
+environment. 
+
+``` /etc/etcd/etcd.conf
+ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:4001"
+```
+
+ Start and enable etcd now.
+
 ```
 # systemctl start etcd; systemctl enable etcd
 # systemctl status etcd
@@ -52,8 +63,7 @@ master node with to upload the data. If this is an OpenStack VM you will need to
 IP address on the OpenStack Horizon dashboard. Use the internal IP in this case.
 
 ```
-# curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config -XPUT
-# --data-urlencode value@/tmp/flannel-config.json
+# curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config -XPUT --data-urlencode /tmp/flannel-config.json
 ```
 
 On success, the `etcd` server will response with a JSON response. Here is an example of successful output:
