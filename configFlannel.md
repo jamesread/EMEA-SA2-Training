@@ -98,8 +98,6 @@ talking to other nodes in the cluster.
 ```
 ...
 FLANNEL_ETCD="http://x.x.x.x:4001"
-...
-FLANNEL_OPTIONS="eth0"
 ```
 
 * Enable the flanneld service and reboot.
