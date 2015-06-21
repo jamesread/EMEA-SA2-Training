@@ -44,6 +44,17 @@ substitute out the MASTER_PRIV_IP_ADDR placeholder below. Exit the containers
 on each node when finished.
 
 ```
+###
+# kubernetes system config
+#
+# The following values are used to configure various aspects of all
+# kubernetes services, including
+#
+#   kube-apiserver.service
+#   kube-controller-manager.service
+#   kube-scheduler.service
+#   kubelet.service
+#   kube-proxy.service
 # logging to stderr means we get it in the systemd journal
 KUBE_LOGTOSTDERR="--logtostderr=true"
 
@@ -53,7 +64,7 @@ KUBE_LOG_LEVEL="--v=0"
 # Should this cluster be allowed to run privileged docker containers
 KUBE_ALLOW_PRIV="--allow_privileged=false"
 
-# How the replication controller and scheduler find the apiserver
+# How the controller-manager, scheduler, and proxy find the apiserver
 KUBE_MASTER="--master=http://MASTER_PRIV_IP_ADDR:8080"
 ```
 
@@ -72,17 +83,18 @@ by services.  But in both cases, no infrastructure changes are needed.  Just
 pick an unused block of addresses.
 
 ```       
-# Comma separated list of nodes in the etcd cluster
-KUBE_ETCD_SERVERS="--etcd_servers=http://MASTER_PRIV_IP_ADDR:4001"
+###
+# kubernetes system config
+#
+# The following values are used to configure the kube-apiserver
+#
 
 # The address on the local server to listen to.
 KUBE_API_ADDRESS="--address=0.0.0.0"
-
-# Address range to use for services
-KUBE_SERVICE_ADDRESSES="--portal_net=10.254.0.0/16"
-
-# Add you own!
-KUBE_API_ARGS=""
+...
+# Comma separated list of nodes in the etcd cluster
+KUBE_ETCD_SERVERS="--etcd_servers=http://MASTER_PRIV_IP_ADDR:4001"
+...
 ```
 
 Edit `/etc/kubernetes/controller-manager` to appear as such.  Substitute your
