@@ -64,7 +64,7 @@ master node with to upload the data. If this is an OpenStack VM you will need to
 IP address on the OpenStack Horizon dashboard. Use the internal IP in this case.
 
 ```
-# curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config -XPUT --data-urlencode /tmp/flannel-config.json
+# curl -L http://x.x.x.x:4001/v2/keys/coreos.com/network/config -XPUT --data-urlencode value@/tmp/flannel-config.json
 ```
 
 On success, the `etcd` server will response with a JSON response. Here is an example of successful output:
