@@ -121,14 +121,6 @@ done
 
 ***We need to configure and start the kubelet and proxy***
 
-**UGLY** Due to a bug in kubernetes we must configure an empty JSON
-authorization file on each node. ( do we still need that? 11-June. )
-* Create the JSON file by running the following on all nodes
-
-```bash
-echo "{}" > /var/lib/kubelet/auth
-```
-
 Edit `/etc/kubernetes/kubelet` to appear as below.  Make sure you substitute
 kublet or node IP addresses appropriately. You have to make two changes
 below.
@@ -145,7 +137,7 @@ KUBELET_HOSTNAME="--hostname_override=LOCAL_MINION_ETH0_ADDRESS"
 KUBELET_API_SERVER="--api_servers=http://MASTER_PRIV_IP_ADDR:8080"
 
 # Add your own!
-KUBELET_ARGS="--auth_path=/var/lib/kubelet/auth"
+KUBELET_ARGS=""
 ```
 
 * edit `/etc/kubernetes/proxy` to appear as below.
