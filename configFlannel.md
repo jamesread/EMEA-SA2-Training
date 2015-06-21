@@ -24,7 +24,8 @@ in our setup and needs to be reachable by all nodes. The easy way is to allow et
 to listen on all available interfaces. Restrict this as you see fit, in your 
 environment. 
 
-``` /etc/etcd/etcd.conf
+```
+# vi  /etc/etcd/etcd.conf
 ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:4001"
 ```
 
